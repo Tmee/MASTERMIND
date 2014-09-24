@@ -9,7 +9,8 @@ class Run
 
   def initialize(printer = Printer.new)
     @command              = ""
-    @target_color_pattern = "rgby".split("").shuffle
+    @long_target = "rrrrggggbbbbyyyy".split("").shuffle
+    @target_color_pattern = @long_target[0..3]
     @correct_elements     = 0
     @correct_positions    = 0
     @guess_count          = 0
@@ -23,9 +24,9 @@ class Run
       @command = gets.strip.split('')
       # if @command = ["q"] || ["q","u","i","t"]
       #   exit
-      # elsif @command.length != 4
+      # else @command.length != 4
       #   printer.command_length_error
-      # else
+      # end
         process_color_guess_elements
         process_color_guess_position
         printer.show_correct_positions(correct_positions)

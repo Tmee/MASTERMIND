@@ -1,7 +1,7 @@
 class Printer
 
   def welcome
-    puts "  Welcome to MASTERMIND!"
+    puts "Welcome to MASTERMIND!".rjust(24)
   end
 
   def show_command_instructions
