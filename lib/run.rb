@@ -38,7 +38,8 @@ class Run
   def process_color_guess_elements
     @guess_count += 1
     @correct_elements = 0
-    @command.each { |color| @correct_elements += 1 if target_color_pattern.include?(color) }
+    # @command.each { |color| @correct_elements += 1 if target_color_pattern.include?(color) }
+
   end
 
   def process_color_guess_position
