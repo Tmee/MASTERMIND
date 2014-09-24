@@ -44,7 +44,7 @@ class Printer
       "                           MASTERMIND has now begun!
        I have generated a beginner sequence with four elements made up of:
                      (r)ed, (g)reen, (b)lue, and (y)ellow.
-                    Use (q)uit at any time to end the game."
+  Use (q)uit at any time to end your current game and return to the home screen."
    ]
   end
 
