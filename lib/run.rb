@@ -9,7 +9,7 @@ class Run
 
   def initialize(printer = Printer.new)
     @command              = ""
-    @long_target = "rrrrggggbbbbyyyy".split("").shuffle
+    @long_target          = "rrrrggggbbbbyyyy".split("").shuffle
     @target_color_pattern = @long_target[0..3]
     @correct_elements     = 0
     @correct_positions    = 0
@@ -23,9 +23,7 @@ class Run
     until win? || exit? || lose?
       printer.guess_request
       @command = gets.strip.split('')
-      if @command.length != 4
-        printer.command_length_error
-      end
+      invalid_guess
       process_color_guess_elements
       process_color_guess_position
       printer.show_correct_positions(correct_positions)
@@ -36,10 +34,21 @@ class Run
   end
 
   def process_color_guess_elements
-    @guess_count += 1
-    @correct_elements = 0
-    # @command.each { |color| @correct_elements += 1 if target_color_pattern.include?(color) }
+    @guess_count                    += 1
+    @correct_elements                = 0
 
+    if @target_color_pattern.include?(@command[0])
+      @correct_elements += 1
+    end
+    if @target_color_pattern.include?(@command[1])
+      @correct_elements += 1
+    end
+    if @target_color_pattern.include?(@command[2])
+      @correct_elements += 1
+    end
+    if @target_color_pattern.include?(@command[3])
+      @correct_elements += 1
+    end
   end
 
   def process_color_guess_position
@@ -59,22 +68,29 @@ class Run
     end
   end
 
+  def invalid_guess
+    case
+    when  @command == ['q'] || @command == ['q','u','i','t']
+      exit
+    when @command.length != 4
+      puts "Error".rjust(42)
+      printer.command_length_error
+    end
+  end
+
   def exit?
     command == ["q"] || command == ["q","u","i","t"]
   end
 
   def lose?
-    if guess_count == 10
-      puts "HAHAHAHA YOU LOST!!!!!!!"
-    end
     guess_count == 10
+    # printer.lost_game
+    # exit
   end
 
   def win?
-    if command[0..3] == target_color_pattern[0..3]
-      puts "GOOD FUCKING JOB MAN!!!!, YOU WON!!!!!!!"
-    end
-    command[0..3] == target_color_pattern[0..3]
+    command == target_color_pattern
+    # printer.win_game
   end
 
   def clear_screen

@@ -35,8 +35,12 @@ class Printer
     puts "You have taken #{@guess_count} times."
   end
 
-  def show_win
+  def win_game
     puts "Congrats!! You beat MASTERMIND!"
+  end
+
+  def lost_game
+    puts "You lost the game."
   end
 
   def show_opening
@@ -44,7 +48,7 @@ class Printer
       "                           MASTERMIND has now begun!
        I have generated a beginner sequence with four elements made up of:
                      (r)ed, (g)reen, (b)lue, and (y)ellow.
-  Use (q)uit at any time to end your current game and return to the home screen."
+                  Use (q)uit at any time to leave MASTERMIND."
    ]
   end
 
