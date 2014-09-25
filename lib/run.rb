@@ -1,10 +1,11 @@
 class Run
-  attr_reader :command,
-              :target_color_pattern,
+  attr_reader :target_color_pattern,
               :correct_elements,
               :correct_positions,
               :guess_count,
               :printer
+
+  attr_accessor :command
 
 
   def initialize(printer = Printer.new)
@@ -20,16 +21,9 @@ class Run
   def play
     clear_screen
     printer.show_opening
-    until win? || exit? || lose?
+    until win? || lost? || exit?
       printer.guess_request
       @command = gets.strip.split('')
-      invalid_guess
-      process_color_guess_position
-      process_color_guess_elements
-      printer.show_correct_positions(correct_positions)
-      printer.show_correct_elements(correct_elements)
-      printer.show_guess_count(guess_count)
-      printer.show_target(target_color_pattern)
       process_turn
     end
   end
@@ -37,32 +31,40 @@ class Run
   def process_turn
     case
     when win?
-      printer.win_game
-    when lose?
-      printer.lose_game
+      printer.win_game(guess_count)
     when exit?
       exit
-
-
+    when hint?
+      printer.show_target(target_color_pattern)
+    when invalid_guess
+      printer.command_length_error
+    else
+      process_color_guess_position
+      process_color_guess_elements
+      printer.show_correct_positions(correct_positions)
+      printer.show_correct_elements(correct_elements)
+      printer.show_guess_count(guess_count)
+      printer.lost_game if lost?
     end
   end
 
   def process_color_guess_elements
-    @guess_count                    += 1
-    @correct_elements                = 0
+    @guess_count += 1
+    @correct_elements = 0
 
     @command.each_with_index do |color, index|
       if command.count(color) == target_color_pattern.count(color)
         @correct_elements += command.count(color)
       end
-      if command.count(color) > target_color_pattern.count(color)
+      if command.count(color) > target_color_pattern.count(color) && target_color_pattern.count(color) != 0
         @correct_elements += target_color_pattern.count(color)
-        @command.delete_if {|color,index| color, index = color, index}
       end
-      if command.count(color) < target_color_pattern.count(color)
+      if command.count(color) < target_color_pattern.count(color) && target_color_pattern.count(color) != 0
         @correct_elements += command.count(color)
       end
+      @command.delete(color)
     end
+    return @command
   end
 
   def process_color_guess_position
@@ -84,10 +86,9 @@ class Run
 
   def invalid_guess
     case
-    when exit?
+    when  @command == ['q'] || @command == ['q','u','i','t']
       exit
     when @command.length != 4
-      puts "Error".rjust(41)
       printer.command_length_error
     end
   end
@@ -96,12 +97,16 @@ class Run
     command == ["q"] || command == ["q","u","i","t"]
   end
 
-  def lose?
+  def lost?
     guess_count == 10
   end
 
   def win?
     command == target_color_pattern
+  end
+
+  def hint?
+    command == ['h'] || command == ['h','i','n','t']
   end
 
   def clear_screen
