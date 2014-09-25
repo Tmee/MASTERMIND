@@ -32,9 +32,6 @@ class Run
       printer.show_target(target_color_pattern)
     end
   end
-   def color_only?(color)
-     @target_color_pattern.include?(color)
-   end
 
   def process_color_guess_elements
     @guess_count                    += 1
@@ -48,20 +45,10 @@ class Run
         @correct_elements += target_color_pattern.count(color)
         @command.delete_if {|color,index| color, index = color, index}
       end
+      if command.count(color) < target_color_pattern.count(color)
+        @correct_elements += command.count(color)
+      end
     end
-    # if @target_color_pattern.include?(@command[0])
-    #   @command.slice!(0)
-    #   @correct_elements += 1
-    # end
-    # # if @target_color_pattern.include?(@command[1])
-    #   @correct_elements += 1
-    # end
-    # if @target_color_pattern.include?(@command[2])
-    #   @correct_elements += 1
-    # end
-    # if @target_color_pattern.include?(@command[3])
-    #   @correct_elements += 1
-    # end
   end
 
   def process_color_guess_position
