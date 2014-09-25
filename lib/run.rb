@@ -24,31 +24,44 @@ class Run
       printer.guess_request
       @command = gets.strip.split('')
       invalid_guess
-      process_color_guess_elements
       process_color_guess_position
+      process_color_guess_elements
       printer.show_correct_positions(correct_positions)
       printer.show_correct_elements(correct_elements)
       printer.show_guess_count(guess_count)
       printer.show_target(target_color_pattern)
     end
   end
+   def color_only?(color)
+     @target_color_pattern.include?(color)
+   end
 
   def process_color_guess_elements
     @guess_count                    += 1
     @correct_elements                = 0
 
-    if @target_color_pattern.include?(@command[0])
-      @correct_elements += 1
+    @command.each_with_index do |color, index|
+      if command.count(color) == target_color_pattern.count(color)
+        @correct_elements += command.count(color)
+      end
+      if command.count(color) > target_color_pattern.count(color)
+        @correct_elements += target_color_pattern.count(color)
+        @command.delete_if {|color,index| color, index = color, index}
+      end
     end
-    if @target_color_pattern.include?(@command[1])
-      @correct_elements += 1
-    end
-    if @target_color_pattern.include?(@command[2])
-      @correct_elements += 1
-    end
-    if @target_color_pattern.include?(@command[3])
-      @correct_elements += 1
-    end
+    # if @target_color_pattern.include?(@command[0])
+    #   @command.slice!(0)
+    #   @correct_elements += 1
+    # end
+    # # if @target_color_pattern.include?(@command[1])
+    #   @correct_elements += 1
+    # end
+    # if @target_color_pattern.include?(@command[2])
+    #   @correct_elements += 1
+    # end
+    # if @target_color_pattern.include?(@command[3])
+    #   @correct_elements += 1
+    # end
   end
 
   def process_color_guess_position
