@@ -1,20 +1,18 @@
 class Printer
 
   def welcome
-    puts "Welcome to MASTERMIND!".rjust(24)
+    puts "Welcome to MASTERMIND!".rjust(36)
   end
 
   def show_command_instructions
-    puts [
-      "What would you like to do?
-      (p)lay
-      (i)nstructions
-      (q)uit"
-    ]
+    puts "What would you like to do?".rjust(38)
+    puts "(p)lay".rjust(28)
+    puts "(i)nstructions".rjust(36)
+    puts "(q)uit".rjust(28)
   end
 
   def invalid_command
-    puts "I'm not sure what that command means...try again"
+    puts "I'm not sure what that command means...try again".rjust(50)
   end
 
   def command_request
@@ -26,9 +24,11 @@ class Printer
   end
 
   def show_instructions
-    puts "Insctructions"
-    puts "-This is a brief summary of how to play MASTERMIND"
-    puts "-Another thing"
+    print "\e[2J\e[f"
+    puts "Instructions:\n\n"
+    puts "-A color sequence will be generated using a set of colors\n\n"
+    puts "-You will be given 10 guesses to find the correct color sequence\n\n"
+    puts "-You will be told the number of correct colors as well as the number of correct positions for each guess\n\n"
   end
 
   def show_guess_count
@@ -36,7 +36,16 @@ class Printer
   end
 
   def win_game
-    puts "Congrats!! You beat MASTERMIND!"
+    puts [
+      '██╗    ██╗██╗███╗   ██╗███╗   ██╗███████╗██████╗
+██║    ██║██║████╗  ██║████╗  ██║██╔════╝██╔══██╗
+██║ █╗ ██║██║██╔██╗ ██║██╔██╗ ██║█████╗  ██████╔╝
+██║███╗██║██║██║╚██╗██║██║╚██╗██║██╔══╝  ██╔══██╗
+╚███╔███╔╝██║██║ ╚████║██║ ╚████║███████╗██║  ██║
+ ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝
+                                                 ']
+
+    puts "Congrats!! You beat MASTERMIND!".rjust(40)
   end
 
   def lost_game
@@ -50,13 +59,6 @@ class Printer
                      (r)ed, (g)reen, (b)lue, and (y)ellow.
                   Use (q)uit at any time to leave MASTERMIND."
    ]
-  end
-
-  def show_results
-    show_correct_positions(correct_positions);
-    show_correct_elements(correct_elements);
-    show_guess_count(guess_count);
-    show_target(target_color_pattern)
   end
 
   def show_correct_positions(correct_positions)

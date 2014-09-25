@@ -30,6 +30,20 @@ class Run
       printer.show_correct_elements(correct_elements)
       printer.show_guess_count(guess_count)
       printer.show_target(target_color_pattern)
+      process_turn
+    end
+  end
+
+  def process_turn
+    case
+    when win?
+      printer.win_game
+    when lose?
+      printer.lose_game
+    when exit?
+      exit
+
+
     end
   end
 
@@ -70,10 +84,10 @@ class Run
 
   def invalid_guess
     case
-    when  @command == ['q'] || @command == ['q','u','i','t']
+    when exit?
       exit
     when @command.length != 4
-      puts "Error".rjust(42)
+      puts "Error".rjust(41)
       printer.command_length_error
     end
   end
@@ -84,13 +98,10 @@ class Run
 
   def lose?
     guess_count == 10
-    # printer.lost_game
-    # exit
   end
 
   def win?
     command == target_color_pattern
-    # printer.win_game
   end
 
   def clear_screen
